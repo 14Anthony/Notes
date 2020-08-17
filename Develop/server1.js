@@ -37,3 +37,28 @@ app.get("/api/notes/:id", function (req, res) {
     }
     return res.json(false);
 });
+// Create New Notes - takes in JSON input
+app.post("/api/notes", function (req, res) {
+    // req.body hosts is equal to the JSON post sent from the user
+    e
+    const newNote = req.body;
+    newNote.id = Date.now()
+    console.log(newNote);
+    fs.readFile("./db/db.json", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        let notes = JSON.parse(data)
+        notes.push(newNote);
+        let notesString = JSON.stringify(notes);
+        fs.writeFile('./db/db.json', notesString, function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Success!");
+            res.json(newNote);
+        })
+        console.log(data);
+    });
+
+});
