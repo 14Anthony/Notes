@@ -62,3 +62,32 @@ app.post("/api/notes", function (req, res) {
     });
 
 });
+app.delete("/api/notes/:id", function (req, res) {
+    const choose = req.params.id;
+    console.log(choose);
+    fs.readFile("./db/db.json", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        let notes = JSON.parse(data)
+        const keep = [];
+        for (let i = 0; i < notes.length; i++) {
+            if (choose != notes[i].id) {
+                keep.push(notes[i]);
+
+            }
+        }
+        let keepers = JSON.stringify(keep);
+
+
+        fs.writeFile('./db/db.json', keepers, function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Success!");
+            res.json(keepers);
+        })
+        console.log(data);
+    });
+
+});
