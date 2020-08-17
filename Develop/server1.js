@@ -26,3 +26,14 @@ app.get("/api/notes", function (req, res) {
         return res.json(JSON.parse(data));
     });
 });
+// Displays a single Note, or returns false
+app.get("/api/notes/:id", function (req, res) {
+    const choose = req.params.id;
+    console.log(choose);
+    for (let i = 0; i < dbjson.length; i++) {
+        if (choose == dbjson[i].id) {
+            return res.json(dbjson[i]);
+        }
+    }
+    return res.json(false);
+});
